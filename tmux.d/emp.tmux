@@ -26,7 +26,7 @@ set -g status-left "#[fg=colour233,bg=colour24,bold] #S #[fg=colour24,bg=colour2
 set -g status-right-bg colour233
 set -g status-right-fg colour243
 set -g status-right-length 150
-set -g status-right "#[fg=colour235,bg=colour238]#[fg=colour240,bg=colour235] %l:%M #[fg=colour24,bg=colour235]#[fg=colour233,bg=colour24,bold] #(currently-playing) "
+set -g status-right "#[fg=colour235,bg=colour238]#[fg=colour240,bg=colour235] %l:%M #[fg=colour24,bg=colour235]#[fg=colour233,bg=colour24,bold] #(~/.dotfiles/scripts/currently-playing) "
 
 # Window status
 set -g window-status-format "  #I #W#F  "
