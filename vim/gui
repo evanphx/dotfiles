@@ -1,0 +1,19 @@
+set background=light
+" colorscheme solarized
+
+colorscheme PaperColor
+let g:airline_theme='papercolor'
+set mouse=a                 " use mouse when possible
+" set gfn=DejaVu\ Sans\ Mono\ for\ Powerline:h12
+" set guifont=Inconsolata\ for\ Powerline:h12 " Menlo\ Regular:h12 " Inconsolata, 16pt high
+set macligatures
+set guifont=Fira\ Code:h14
+
+let g:airline_powerline_fonts = 1
+
+" GUI option string.  Values:
+"   a: visual-mode selections go to the clipboard
+"   A: modeless selections go to the clipboard
+"   c: don't pop up windows; use the console for dialog boxes and such
+"   e: use GUI tab bar instead of text tab bar
+set guioptions=aAce

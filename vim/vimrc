@@ -1,0 +1,135 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+syntax enable
+
+source $HOME/.vim/plugins
+
+set directory=~/.vim/swapfiles,/var/tmp,/tmp,.
+
+let mapleader=',' " set leader to ,
+
+" Open a vertical split
+map <leader>v <C-W>v
+
+inoremap <C-CR> <ESC>
+
+" Use Control-N to clear the highlighted search
+nmap <silent> <C-N> :silent noh<CR>
+
+map <leader>be :CtrlPBuffer<CR>
+let g:ctrlp_use_caching = 0
+
+set wildmenu     " fancy command completion menu!
+set wildmode=list:longest
+
+" Miscellaneous Options. Values:
+"   a: ":read" sets window filename
+"   A: ":write" sets window filename
+"   B: backslash has no special meaning in ":map"
+"   c: search continues from the end of the match
+"   e: automatically add <CR> to the end of executed registers
+"   F: ":write" sets buffer filename
+"   s: set buffer options on entering the buffer
+"   W: refuse to overwrite a readonly file, even with :w!
+"   Z: don't reset 'readonly' when using :w!
+set cpoptions=aABceFsWZ
+
+set number      " show line numbers
+set showbreak=+ " display a + at the beginning of a wrapped line
+set showmatch   " flash the matching bracket on inserting a )]} etc
+set linebreak 
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+set autowrite
+
+set autoindent " automatically indent new lines
+set softtabstop=2 " most of the time, we want a softtabstop of 4
+set shiftwidth=2  " shift by 4 spaces when using >> and <<, etc
+set tabstop=2
+set expandtab     " no tabs, just spaces kthx.
+
+" Using autocmd for this allows it to be reset every time you open a
+" file, which keeps overrides from being persistent
+autocmd FileType * set softtabstop=2 shiftwidth=2 tabstop=2 expandtab
+
+"set list                     " show whitespace
+set listchars=tab:»·,trail:· " show tabs and trailing spaces
+set listchars+=extends:»     " show a » when a line goes off the right
+                             " edge of the screen
+set listchars+=precedes:«    " show a « when a line goes off the left
+                             " edge of the screen
+
+" only show the menu on completions
+set completeopt=menu
+
+set ignorecase " makes search patterns case-insensitive by default
+set smartcase  " overrides ignorecase when the pattern contains
+               " upper-case characters
+set incsearch  " incremental search. 'nuf said
+set hlsearch   " highlight searches
+
+augroup MRISettings
+au BufRead,BufNewFile ~/git/ruby/*.[ch] setl tabstop=8 shiftwidth=4 softtabstop=4 noexpandtab
+augroup END
+
+" in makefiles, don't expand tabs to spaces, since actual tab characters are
+" needed, and have indentation at 8 chars to be sure that all indents are tabs
+" (despite the mappings later):
+autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
+
+autocmd FileType markdown set tw=78
+
+" replace the normal word movement keys with smart versions
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+
+let NERDCreateDefaultMappings=0 " disable default mappings
+let NERDMenuMode=0              " disable menu
+let NERDSpaceDelims=1           " place spaces after comment chars
+let NERDDefaultNesting=0        " don't recomment commented lines
+
+map <leader>cc <plug>NERDCommenterToggle
+map <leader>cC <plug>NERDCommenterSexy
+map <leader>cu <plug>NERDCommenterUncomment
+
+map <leader>i :GoInfo<CR>
+let g:go_fmt_command = "goimports"
+
+set omnifunc=syntaxcomplete#Complete
+
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabClosePreviewOnPopupClose = 1
+
+set ruler          " shows cursor position in the lower right
+set showcmd        " shows incomplete command to the left of the ruler
+set winminheight=0 " allow windows to be 0 lines tall
+set winminwidth=0  " allow windows to be 0 lines wide
+set laststatus=2   " always show statusline
+
+" set up statusline, ends up looking like this:
+"
+"   [1] window.vimrc [Preview] [vim,+]          0x00 @ l22 c51 (88%)
+"
+set statusline=
+set statusline+=%n:\                      " buffer number
+set statusline+=%f                        " filename
+set statusline+=%<                        " truncate here if necessary
+set statusline+=%10w                      " displays [Preview] if it is
+set statusline+=\ [                       " fix spacing, open bracket
+set statusline+=%{strlen(&ft)?&ft:'none'} " filetype
+set statusline+=%M                        " + if modified, - if r/o
+set statusline+=]                         " close bracket
+set statusline+=%=                        " right-align remainder
+set statusline+=0x%02B\                   " character hex value
+set statusline+=@\ L%l\ C%c\ (%P)\        " position in file
+
+if has("gui_running")
+    source $HOME/.vim/gui
+else
+    source $HOME/.vim/term
+endif
+
