@@ -10,26 +10,42 @@ Plugin 'VundleVim/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
+Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'bkad/CamelCaseMotion'
 Plugin 'chriskempson/tomorrow-theme', { 'rtp': 'vim/' }
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'edkolev/promptline.vim'
-Plugin 'ervandew/supertab'
+Plugin 'ElmCast/elm-vim'
+" Plugin 'ervandew/supertab'
 Plugin 'fatih/vim-go'
 Plugin 'fatih/vim-hclfmt'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'junegunn/fzf.vim'
 Plugin 'nazo/pt.vim'
+Plugin 'neoclide/coc.nvim', {'branch': 'release'}
 Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'raphamorim/lucario'
+" Plugin 'roxma/nvim-completion-manager'
 Plugin 'scrooloose/nerdcommenter'
+" Plugin 'sebdah/vim-delve'
 Plugin 'slim-template/vim-slim.git'
+Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-markdown'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-sleuth'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-ruby/vim-ruby'
+
+Plugin 'w0rp/ale'
+
+" Plugin 'hashivim/vim-terraform'
+
+" Plugin 'Shougo/deoplete.nvim'
+" Plugin 'zchee/deoplete-go'
+" Plugin 'zchee/deoplete-clang'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

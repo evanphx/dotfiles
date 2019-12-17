@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/Users/evan/hc-git/demo-base-vpc/terraform'
+let g:netrw_dirhist_2='/Users/evan/hc-git/terraform-enterprise/terraform/aws-standard-nodns'
+let g:netrw_dirhist_3='/Users/evan/hc-git/terraform-enterprise/terraform/modules/tfe-instance'
+let g:netrw_dirhist_4='/Users/evan/hc-git/terraform-enterprise/terraform/modules/rds'
+let g:netrw_dirhist_5='/Users/evan/go/src/github.com/hashicorp/binstore/ratelimit'
+let g:netrw_dirhist_6='/Users/evan/hc-git/terraform-enterprise/terraform/modules/tfe-instance'
+let g:netrw_dirhist_7='/Users/evan/.vim/bundle'

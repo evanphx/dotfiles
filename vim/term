@@ -1,8 +1,9 @@
 set background=dark
 " colorscheme solarized
 
+set mouse=a
+
 colorscheme Tomorrow-Night
 let g:airline_theme='tomorrow'
 
 let g:airline_powerline_fonts = 1
-
