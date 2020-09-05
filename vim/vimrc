@@ -1,6 +1,9 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+autocmd BufRead,BufNewFile *.tf set filetype=terraform
+" autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+
 set termguicolors
 
 " set ttymouse=xterm2
@@ -16,6 +19,8 @@ let mapleader=',' " set leader to ,
 " Open a vertical split
 map <leader>v <C-W>v
 
+map <leader>l :ll<CR>
+
 set splitbelow
 
 inoremap <C-CR> <ESC>
@@ -28,6 +33,8 @@ nmap <silent> <C-N> :silent noh<CR>
 
 map <leader>be :CtrlPBuffer<CR>
 map <leader>bo :Files<CR>
+
+nnoremap <silent> gw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>:nohlsearch<CR>
 
 set wildmenu     " fancy command completion menu!
 set wildmode=list:longest
@@ -111,15 +118,15 @@ map <leader>cu <plug>NERDCommenterUncomment
 " map <leader>d :<C-u>call go#def#Jump("split", 0)<CR>
 let g:go_fmt_command = "goimports"
 let g:go_highlight_extra_types = 1
-" let g:go_info_mode = 'guru'
+let g:go_info_mode = 'guru'
 " let g:go_auto_type_info = 1
+"
 "
 let g:go_term_enabled = 1
 let g:go_term_mode = "split"
 let g:go_term_height = 10
 
-let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
+let g:go_gopls_enabled = 0
 
 " set omnifunc=syntaxcomplete#Complete
 
@@ -142,7 +149,12 @@ let g:ale_linters = {
 let g:ale_lint_on_text_changed = "never"
 let g:ale_lint_on_insert_leave = 1
 
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
+
 highlight link ALEWarning WarningMsg
+
+autocmd BufRead,BufNewFile *.chell setfiletype bzl
 
 set ruler          " shows cursor position in the lower right
 set showcmd        " shows incomplete command to the left of the ruler
@@ -194,16 +206,30 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
+" inoremap <silent><expr> <TAB>
+      " \ pumvisible() ? "\<C-n>" :
+      " \ <SID>check_back_space() ? "\<TAB>" :
+      " \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" function! s:check_back_space() abort
+  " let col = col('.') - 1
+  " return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
+
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+let g:coc_snippet_next = '<tab>'
+
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
