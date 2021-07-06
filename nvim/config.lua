@@ -176,22 +176,22 @@ gls.right = {
       highlight = {colors.red, colors.line_bg},
     }
   },
-  -- {
-    -- LspStatus = {
-      -- provider = function()
-        -- local connected = not vim.tbl_isempty(vim.lsp.buf_get_clients(0))
-        -- if connected then
-          -- return ' ' .. u 'f076' .. ' '
+  {
+    LspStatus = {
+      provider = function()
+        local connected = not vim.tbl_isempty(vim.lsp.buf_get_clients(0))
+        if connected then
+          return ' ' .. u 'f076' .. ' '
           -- return ' ' .. u 'f817' .. ' '
-        -- else
-          -- return ''
-        -- end
-      -- end,
-      -- highlight = {colors.cyan, colors.line_bg},
-      -- separator = ' ',
-      -- separator_highlight = {colors.blue, colors.line_bg},
-    -- },
-  -- },
+        else
+          return ''
+        end
+      end,
+      highlight = {colors.cyan, colors.line_bg},
+      separator = ' ',
+      separator_highlight = {colors.blue, colors.line_bg},
+    },
+  },
   {
     LineInfo = {
       provider = 'LineColumn',
