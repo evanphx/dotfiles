@@ -7,5 +7,6 @@ install(
   "jq",
   "tmux",
   "lua",
-  "luarocks"
+  "luarocks",
+  "ripgrep"
 )
