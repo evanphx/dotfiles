@@ -1,0 +1,11 @@
+source("~/git/aperture-packages")
+
+install(
+  "go",
+  "neovim",
+  "htop",
+  "jq",
+  "tmux",
+  "lua",
+  "luarocks"
+)
