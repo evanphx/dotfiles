@@ -8,5 +8,6 @@ install(
   "tmux",
   "lua",
   "luarocks",
-  "ripgrep"
+  "ripgrep",
+  "fzf",
 )
