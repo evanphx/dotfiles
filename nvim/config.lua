@@ -1,3 +1,27 @@
+-- Telescope
+
+require("telescope").setup {
+  defaults = {
+    -- Your defaults config goes in here
+  },
+  buffers = {
+    sort_lastused = true,
+    theme = "dropdown",
+    mappings = {
+      i = {
+        ["<c-d>"] = require("telescope.actions").delete_buffer,
+        -- or right hand side can also be a the name of the action as string
+        ["<c-d>"] = "delete_buffer",
+      },
+      n = {
+        ["<c-d>"] = require("telescope.actions").delete_buffer,
+      }
+    }
+  },
+}
+
+
+
 -- Galaxyline config
 --
 --
@@ -83,11 +107,18 @@ gls.left = {
     },
   },
   {
-    FileIcon = {
-      provider = 'FileIcon',
+    FilePath = {
+      provider = function() return vim.fn.expand("%:h") end,
       condition = condition.buffer_not_empty,
-      highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.line_bg},
-    },
+      highlight = {colors.gray,colors.line_bg}
+    }
+  },
+  {
+    FileSep = {
+      provider = function() return "/" end,
+      condition = condition.buffer_not_empty,
+      highlight = {colors.gray,colors.line_bg,"bold"}
+    }
   },
   {
     FileName = {
@@ -95,6 +126,13 @@ gls.left = {
       condition = condition.buffer_not_empty,
       highlight = {colors.purple,colors.line_bg,'bold'}
     }
+  },
+  {
+    FileIcon = {
+      provider = 'FileIcon',
+      condition = condition.buffer_not_empty,
+      highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.line_bg},
+    },
   },
   {
     DiagnosticError = {
