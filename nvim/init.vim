@@ -15,7 +15,9 @@ Plug 'tpope/vim-sleuth'
 
 Plug 'marko-cerovac/material.nvim'
 Plug 'tjdevries/colorbuddy.nvim'
-Plug 'maaslalani/nordbuddy'
+Plug 'evanphx/nordbuddy'
+Plug 'norcalli/nvim-base16.lua'
+
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
@@ -196,6 +198,11 @@ nmap        S   <Plug>(vsnip-cut-text)
 xmap        S   <Plug>(vsnip-cut-text)
 
 lua <<EOF
+
+-- local base16 = require 'base16'
+-- base16(base16.themes["tomorrow-night"], true)
+
+
   function goimports(timeout_ms)
     local params = vim.lsp.util.make_range_params()
     params.context = {only = {"source.organizeImports"}}
@@ -254,8 +261,23 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
-  require('lsp_signature').on_attach()
+  require('lsp_signature').on_attach({
+    bind = true,
+    doc_lines = 0,
+    floating_window = false,
+    hint_scheme = 'Comment',
+  })
 end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -264,7 +286,8 @@ for _, lsp in ipairs(servers) do
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
-    }
+    },
+    capabilities = capabilities,
   }
 end
 

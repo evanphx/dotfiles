@@ -10,4 +10,5 @@ install(
   "luarocks",
   "ripgrep",
   "fzf",
+  "ruby-26",
 )
