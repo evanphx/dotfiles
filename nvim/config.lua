@@ -1,8 +1,52 @@
+require('neogit').setup {
+  disable_signs = false,
+  disable_context_highlighting = false,
+  disable_commit_confirmation = false,
+  -- customize displayed signs
+  signs = {
+    -- { CLOSED, OPENED }
+    section = { ">", "v" },
+    item = { ">", "v" },
+    hunk = { "", "" },
+  },
+  integrations = {
+    -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
+    -- The diffview integration enables the diff popup, which is a wrapper around `sindrets/diffview.nvim`.
+    --
+    -- Requires you to have `sindrets/diffview.nvim` installed.
+    -- use { 
+    --   'TimUntersberger/neogit', 
+    --   requires = { 
+    --     'nvim-lua/plenary.nvim',
+    --     'sindrets/diffview.nvim' 
+    --   }
+    -- }
+    --
+    diffview = false  
+  },
+  -- override/add mappings
+  mappings = {
+    -- modify status buffer mappings
+    status = {
+      -- Adds a mapping with "B" as key that does the "BranchPopup" command
+      ["B"] = "BranchPopup",
+      -- Removes the default mapping of "s"
+      ["s"] = "",
+    }
+  }
+}
+
+
 -- Telescope
 
+local actions = require('telescope.actions')
 require("telescope").setup {
   defaults = {
-    -- Your defaults config goes in here
+    mappings = {
+      i = {
+        ["<esc>"] = actions.close
+      },
+    },
   },
   buffers = {
     sort_lastused = true,
@@ -20,7 +64,7 @@ require("telescope").setup {
   },
 }
 
-
+require('gitsigns').setup()
 
 -- Galaxyline config
 --
@@ -317,3 +361,27 @@ vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+
+-- Extra Tree Sitter setup
+
+local pc = require "nvim-treesitter.parsers".get_parser_configs()
+
+pc.protobuf = {
+  install_info = {
+    url = "https://github.com/mitchellh/tree-sitter-proto", -- local path or git repo
+    files = {"src/parser.c"},
+    branch = "main",
+  },
+  filetype = "proto", -- if filetype does not agrees with parser name
+  -- used_by = {"bar", "baz"} -- additional filetypes that use this parser
+}
+
+pc.hcl = {
+  install_info = {
+    url = "~/git/tree-sitter-hcl", -- local path or git repo
+    files = {"src/parser.c", "src/scanner.cc"},
+    branch = "main",
+  },
+  filetype = "hcl",
+  used_by = {"tf"}
+}
