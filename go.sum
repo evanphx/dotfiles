@@ -1,0 +1,4 @@
+github.com/gsamokovarov/assert v0.0.0-20180414063448-8cd8ab63a335 h1:MFE3iUApg9Sl5MmZnosCEhYXRQCKz5coShpoAF86IiE=
+github.com/gsamokovarov/assert v0.0.0-20180414063448-8cd8ab63a335/go.mod h1:ejyiK4+/RLW9C/QgBK+nlwDmNB9pIW9i2WVqMmAa7no=
+github.com/gsamokovarov/jump v0.41.0 h1:UDYdgLUjrlbfivKWbYzBZB3jbL9GOOhNPWFWf28qYH0=
+github.com/gsamokovarov/jump v0.41.0/go.mod h1:4Eixw7lAy/ZR+4nskrX+ca9Hg1eiqEZfVGUaVcUUHCI=

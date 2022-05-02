@@ -18,18 +18,27 @@ Plug 'marko-cerovac/material.nvim'
 Plug 'tjdevries/colorbuddy.nvim'
 Plug 'evanphx/nordbuddy'
 Plug 'norcalli/nvim-base16.lua'
-
+Plug 'stevearc/dressing.nvim'
 
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'onsails/lspkind.nvim'
+
+" For vsnip users.
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+" Plug 'hrsh7th/vim-vsnip-integ'
+
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'nvim-treesitter/playground'
 
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'hrsh7th/vim-vsnip'
-" Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'glepnir/dashboard-nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
@@ -44,7 +53,7 @@ Plug 'ryanoasis/vim-devicons' " vimscript
 Plug 'liuchengxu/vista.vim'
 Plug 'ray-x/lsp_signature.nvim'
 
-Plug 'golang/vscode-go'
+" Plug 'golang/vscode-go'
 
 call plug#end()
 
@@ -93,7 +102,7 @@ set signcolumn=yes
 set background=dark
 set mouse=a
 
-set completeopt=menuone,noselect
+set completeopt=menu,menuone,noselect
 
 let g:airline_theme='tomorrow'
 
@@ -125,7 +134,7 @@ endif
 
 filetype off
 syntax enable
-colorscheme nordbuddy
+colorscheme nordic
 
 " << KEY MAPPINGS >>
 
@@ -159,11 +168,11 @@ nmap <leader>lcd :lcd %:h<CR>
 map <leader>y "*y
 map <leader>p "*p
 
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+" inoremap <silent><expr> <C-Space> compe#complete()
+" inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
 map <leader>i <Cmd>lua vim.lsp.buf.hover()<CR>
 map <leader>T <cmd>lua vim.lsp.buf.type_definition()<CR>
@@ -231,6 +240,7 @@ autocmd BufWritePre *.go lua goimports(1000)
 lua <<LUA
 local servers = { "gopls" }
 
+-- Setup lspconfig.
 local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys 
@@ -264,7 +274,8 @@ local on_attach = function(client, bufnr)
   })
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()) --nvim-cmp
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {
@@ -286,41 +297,117 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-require('compe').setup {
- enabled = true;
- autocomplete = true;
- debug = false;
- min_length = 1;
- preselect = 'always';
- throttle_time = 80;
- source_timeout = 200;
- resolve_timeout = 800;
- incomplete_delay = 400;
- max_abbr_width = 100;
- max_kind_width = 100;
- max_menu_width = 100;
- documentation = {
-   border = { '', '' ,'', ' ', '', '', '', ' ' }, -- the border option is the same as `|help nvim_open_win|`
-   winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
-   max_width = 120,
-   min_width = 60,
-   max_height = math.floor(vim.o.lines * 0.3),
-   min_height = 1,
- };
+-- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()) --nvim-cmp
+-- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
- source = {
-   nvim_lsp = {
-     priority = 1000;
-     menu = ' ';
-   };
-   path = true;
-   buffer = true;
-   nvim_lua = true;
-   vsnip = {
-     menu = "S";
-   }
- };
+nvim_lsp['gopls'].setup{
+  cmd = {'gopls'},
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    gopls = {
+      experimentalPostfixCompletions = true,
+      staticcheck = true,
+    },
+  }
 }
+
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+local feedkey = function(key, mode)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
+
+local cmp_kinds = {
+  Text = '  ',
+  Method = '  ',
+  Function = '  ',
+  Constructor = '  ',
+  Field = '  ',
+  Variable = '  ',
+  Class = '  ',
+  Interface = '  ',
+  Module = '  ',
+  Property = '  ',
+  Unit = '  ',
+  Value = '  ',
+  Enum = '  ',
+  Keyword = '  ',
+  Snippet = '  ',
+  Color = '  ',
+  File = '  ',
+  Reference = '  ',
+  Folder = '  ',
+  EnumMember = '  ',
+  Constant = '  ',
+  Struct = '  ',
+  Event = '  ',
+  Operator = '  ',
+  TypeParameter = '  ',
+}
+
+local cmp = require('cmp')
+local lspkind = require('lspkind')
+
+cmp.setup({
+  formatting = {
+    format = function(_, vim_item)
+      vim_item.kind = (cmp_kinds[vim_item.kind] or '') .. vim_item.kind
+      return vim_item
+    end,
+
+    -- format = lspkind.cmp_format(),
+  },
+  snippet = {
+   expand = function(args)
+     vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+   end,
+  },
+  mapping = {
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif vim.fn["vsnip#available"](1) == 1 then
+        feedkey("<Plug>(vsnip-expand-or-jump)", "")
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey("<Plug>(vsnip-jump-prev)", "")
+      end
+    end, { "i", "s" }),
+    ["<Up>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey("<Plug>(vsnip-jump-prev)", "")
+      end
+    end, { "i", "s" }),
+    ["<Down>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey("<Plug>(vsnip-jump-prev)", "")
+      end
+    end, { "i", "s" }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' }, -- For vsnip users.
+  }, {
+    { name = 'buffer' },
+  })
+})
 
 require('nvim-treesitter.configs').setup {
  highlight = {
