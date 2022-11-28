@@ -409,6 +409,16 @@ cmp.setup({
   })
 })
 
+cmp.setup.filetype({ 'markdown', 'help' }, {
+  sources = {
+    { name = 'path' },
+    { name = 'buffer' },
+  },
+  completion = {
+    autocomplete = false
+  }
+})
+
 require('nvim-treesitter.configs').setup {
  highlight = {
    enable = true,
