@@ -12,7 +12,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-sleuth'
-Plug 'TimUntersberger/neogit'
+" Plug 'TimUntersberger/neogit'
 
 Plug 'marko-cerovac/material.nvim'
 Plug 'tjdevries/colorbuddy.nvim'
@@ -179,8 +179,8 @@ map <leader>T <cmd>lua vim.lsp.buf.type_definition()<CR>
 map <leader>S <cmd>lua vim.lsp.buf.document_symbol()<CR>
 map <leader>C <cmd>lua vim.lsp.buf.incoming_calls()<CR>
 map <leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
-map <leader>l <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-map <leader>e <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+map <leader>l <cmd>lua vim.diagnostic.goto_next()<CR>
+map <leader>e <cmd>lua vim.diagnostic.open_float()<CR>
 
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>

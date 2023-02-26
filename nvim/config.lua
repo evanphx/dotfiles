@@ -1,15 +1,15 @@
-require('neogit').setup {
-  disable_signs = false,
-  disable_context_highlighting = false,
-  disable_commit_confirmation = false,
+-- require('neogit').setup {
+  -- disable_signs = false,
+  -- disable_context_highlighting = false,
+  -- disable_commit_confirmation = false,
   -- customize displayed signs
-  signs = {
+  -- signs = {
     -- { CLOSED, OPENED }
-    section = { ">", "v" },
-    item = { ">", "v" },
-    hunk = { "", "" },
-  },
-  integrations = {
+    -- section = { ">", "v" },
+    -- item = { ">", "v" },
+    -- hunk = { "", "" },
+  -- },
+  -- integrations = {
     -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
     -- The diffview integration enables the diff popup, which is a wrapper around `sindrets/diffview.nvim`.
     --
@@ -22,19 +22,19 @@ require('neogit').setup {
     --   }
     -- }
     --
-    diffview = false  
-  },
+    -- diffview = false  
+  -- },
   -- override/add mappings
-  mappings = {
+  -- mappings = {
     -- modify status buffer mappings
-    status = {
+    -- status = {
       -- Adds a mapping with "B" as key that does the "BranchPopup" command
-      ["B"] = "BranchPopup",
+      -- ["B"] = "BranchPopup",
       -- Removes the default mapping of "s"
-      ["s"] = "",
-    }
-  }
-}
+      -- ["s"] = "",
+    -- }
+  -- }
+-- }
 
 
 -- Telescope
@@ -144,7 +144,10 @@ gls.left = {
                             cv = colors.red,ce=colors.red, r = colors.cyan,
                             rm = colors.cyan, ['r?'] = colors.cyan,
                             ['!']  = colors.red,t = colors.red}
-        vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
+        local color = mode_color[vim.fn.mode()]
+        if color then
+          vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
+        end
         return '  '
       end,
       highlight = {colors.red,colors.line_bg,'bold'},
@@ -385,3 +388,21 @@ pc.hcl = {
   filetype = "hcl",
   used_by = {"tf"}
 }
+
+pc.hardlight = {
+  install_info = {
+    url = "~/git/tree-sitter-hardlight", -- local path or git repo
+    files = {"src/parser.c"},
+    branch = "main",
+    generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+    requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
+  },
+  filetype = "hardlight",
+  -- used_by = {"tf"}
+}
+
+vim.filetype.add({
+  extension = {
+    hl = "hardlight"
+  }
+})
