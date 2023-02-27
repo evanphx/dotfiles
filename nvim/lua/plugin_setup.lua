@@ -1,43 +1,195 @@
--- require('neogit').setup {
-  -- disable_signs = false,
-  -- disable_context_highlighting = false,
-  -- disable_commit_confirmation = false,
-  -- customize displayed signs
-  -- signs = {
-    -- { CLOSED, OPENED }
-    -- section = { ">", "v" },
-    -- item = { ">", "v" },
-    -- hunk = { "", "" },
-  -- },
-  -- integrations = {
-    -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
-    -- The diffview integration enables the diff popup, which is a wrapper around `sindrets/diffview.nvim`.
-    --
-    -- Requires you to have `sindrets/diffview.nvim` installed.
-    -- use { 
-    --   'TimUntersberger/neogit', 
-    --   requires = { 
-    --     'nvim-lua/plenary.nvim',
-    --     'sindrets/diffview.nvim' 
-    --   }
-    -- }
-    --
-    -- diffview = false  
-  -- },
-  -- override/add mappings
-  -- mappings = {
-    -- modify status buffer mappings
-    -- status = {
-      -- Adds a mapping with "B" as key that does the "BranchPopup" command
-      -- ["B"] = "BranchPopup",
-      -- Removes the default mapping of "s"
-      -- ["s"] = "",
-    -- }
-  -- }
--- }
+require("mason").setup()
+require("mason-lspconfig").setup()
 
+local servers = { "gopls" }
 
--- Telescope
+-- Setup lspconfig.
+local nvim_lsp = require('lspconfig')
+
+-- Use an on_attach function to only map the following keys 
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  --Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  -- buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+
+  require('lsp_signature').on_attach({
+    bind = true,
+    doc_lines = 0,
+    floating_window = false,
+    hint_scheme = 'Comment',
+  })
+end
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities(
+  vim.lsp.protocol.make_client_capabilities()
+) --nvim-cmp
+
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
+    capabilities = capabilities,
+  }
+end
+
+nvim_lsp['gopls'].setup{
+  cmd = {'gopls'},
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    gopls = {
+      experimentalPostfixCompletions = true,
+      staticcheck = true,
+    },
+  }
+}
+
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+local feedkey = function(key, mode)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
+
+local cmp_kinds = {
+  Text = '  ',
+  Method = '  ',
+  Function = '  ',
+  Constructor = '  ',
+  Field = '  ',
+  Variable = '  ',
+  Class = '  ',
+  Interface = '  ',
+  Module = '  ',
+  Property = '  ',
+  Unit = '  ',
+  Value = '  ',
+  Enum = '  ',
+  Keyword = '  ',
+  Snippet = '  ',
+  Color = '  ',
+  File = '  ',
+  Reference = '  ',
+  Folder = '  ',
+  EnumMember = '  ',
+  Constant = '  ',
+  Struct = '  ',
+  Event = '  ',
+  Operator = '  ',
+  TypeParameter = '  ',
+}
+
+local cmp = require('cmp')
+local lspkind = require('lspkind')
+
+cmp.setup({
+  formatting = {
+    format = function(_, vim_item)
+      vim_item.kind = (cmp_kinds[vim_item.kind] or '') .. vim_item.kind
+      return vim_item
+    end,
+
+    -- format = lspkind.cmp_format(),
+  },
+  snippet = {
+   expand = function(args)
+     vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+   end,
+  },
+  mapping = {
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif vim.fn["vsnip#available"](1) == 1 then
+        feedkey("<Plug>(vsnip-expand-or-jump)", "")
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey("<Plug>(vsnip-jump-prev)", "")
+      end
+    end, { "i", "s" }),
+    ["<Up>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey("<Plug>(vsnip-jump-prev)", "")
+      end
+    end, { "i", "s" }),
+    ["<Down>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey("<Plug>(vsnip-jump-prev)", "")
+      end
+    end, { "i", "s" }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' }, -- For vsnip users.
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+cmp.setup.filetype({ 'markdown', 'help' }, {
+  sources = {
+    { name = 'path' },
+    { name = 'buffer' },
+  },
+  completion = {
+    autocomplete = false
+  }
+})
+
+require('nvim-treesitter.configs').setup {
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true
+  }
+}
 
 local actions = require('telescope.actions')
 require("telescope").setup {
@@ -406,3 +558,7 @@ vim.filetype.add({
     hl = "hardlight"
   }
 })
+
+require("fidget").setup{}
+
+require('dap-go').setup()
