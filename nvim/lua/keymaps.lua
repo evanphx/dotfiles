@@ -3,7 +3,7 @@ local function map(mode, lhs, rhs, opts)
   if opts then
     options = vim.tbl_extend('force', options, opts)
   end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- Change leader to a comma
@@ -13,18 +13,33 @@ vim.g.mapleader = ','
 map('n', ']<space>', 'A<CR>')
 
 -- Use Control-N to clear the highlighted search
-map('n', '<silent> <C-N>', ':silent noh<CR>')
+map('n', '<C-N>', ':silent noh<CR>')
 
 -- Clear search highlighting with <leader> and c
-map('n', '<leader>c', ':nohl<CR>')
+map('n', '<leader>c', ':silent nohl<CR>')
 
-map('', '<leader>i', '<Cmd>lua vim.lsp.buf.hover()<CR>')
-map('', '<leader>T', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-map('', '<leader>S', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
-map('', '<leader>C', '<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
-map('', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-map('', '<leader>l', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-map('', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
+map('', 'w', '<Plug>CamelCaseMotion_w')
+map('', 'b', '<Plug>CamelCaseMotion_b')
+map('', 'e', '<Plug>CamelCaseMotion_e')
+
+local tb = require('telescope.builtin')
+
+map('n', "<leader>ff", tb.find_files)
+map('n', "<leader>fg", tb.live_grep)
+map('n', "<leader>be", function() 
+  tb.buffers({sort_lastused=true, ignore_current_buffer=true})
+end)
+map('n', "<leader>fh", tb.help_tags)
+map('n', "<leader>R", tb.lsp_references)
+
+
+map('', '<leader>i', vim.lsp.buf.hover)
+map('', '<leader>T', vim.lsp.buf.type_definition)
+map('', '<leader>S', vim.lsp.buf.document_symbol)
+map('', '<leader>C', vim.lsp.buf.incoming_calls)
+map('', '<leader>rn', vim.lsp.buf.rename)
+map('', '<leader>l', vim.diagnostic.goto_next)
+map('', '<leader>e', vim.diagnostic.open_float)
 
 
 -- Change split orientation

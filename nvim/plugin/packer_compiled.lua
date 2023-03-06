@@ -119,6 +119,11 @@ _G.packer_plugins = {
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/dressing.nvim",
     url = "https://github.com/stevearc/dressing.nvim"
   },
+  falcon = {
+    loaded = true,
+    path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/falcon",
+    url = "https://github.com/fenetikm/falcon"
+  },
   ["fidget.nvim"] = {
     loaded = true,
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/fidget.nvim",
@@ -133,6 +138,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  ["lsp-colors.nvim"] = {
+    loaded = true,
+    path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/lsp-colors.nvim",
+    url = "https://github.com/folke/lsp-colors.nvim"
   },
   ["lsp_signature.nvim"] = {
     loaded = true,
@@ -189,6 +199,11 @@ _G.packer_plugins = {
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/nvim-dap-go",
     url = "https://github.com/leoluz/nvim-dap-go"
   },
+  ["nvim-hybrid"] = {
+    loaded = true,
+    path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/nvim-hybrid",
+    url = "https://github.com/PHSix/nvim-hybrid"
+  },
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
@@ -203,6 +218,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/kyazdani42/nvim-web-devicons"
+  },
+  ["oxocarbon.nvim"] = {
+    loaded = true,
+    path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/oxocarbon.nvim",
+    url = "https://github.com/nyoom-engineering/oxocarbon.nvim"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -263,11 +283,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
-  },
-  ["vim-tmux-focus-events"] = {
-    loaded = true,
-    path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/vim-tmux-focus-events",
-    url = "https://github.com/tmux-plugins/vim-tmux-focus-events"
   },
   ["vim-tmux-navigator"] = {
     loaded = true,

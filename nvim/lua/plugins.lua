@@ -16,7 +16,7 @@ local packer_bootstrap = ensure_packer()
 vim.cmd([[
   augroup packer_user_config
     autocmd!
-    autocmd BufWritePost plugins_setup.lua source <afile> | PackerCompile
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
   augroup end
 ]])
 
@@ -33,7 +33,6 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use 'bkad/CamelCaseMotion'
   use 'christoomey/vim-tmux-navigator'
-  use 'tmux-plugins/vim-tmux-focus-events'
   use 'NLKNguyen/papercolor-theme'
   use {'chriskempson/tomorrow-theme', rtp = 'vim/' }
   use 'scrooloose/nerdcommenter'
@@ -48,6 +47,8 @@ return require('packer').startup(function(use)
   use 'evanphx/nordbuddy'
   use 'norcalli/nvim-base16.lua'
   use 'stevearc/dressing.nvim'
+  use 'nyoom-engineering/oxocarbon.nvim'
+  use 'PHSix/nvim-hybrid'
 
   use 'neovim/nvim-lspconfig'
   use 'hrsh7th/cmp-nvim-lsp'
@@ -56,6 +57,8 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-cmdline'
   use 'hrsh7th/nvim-cmp'
   use 'onsails/lspkind.nvim'
+  use 'folke/lsp-colors.nvim'
+  use 'fenetikm/falcon'
 
   use 'j-hui/fidget.nvim'
 
