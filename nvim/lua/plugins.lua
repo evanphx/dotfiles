@@ -40,6 +40,7 @@ return require('packer').startup(function(use)
   use 'tpope/vim-markdown'
   use 'tpope/vim-surround'
   use 'tpope/vim-sleuth'
+  use 'NvChad/nvterm'
   -- Plug 'TimUntersberger/neogit'
 
   use 'marko-cerovac/material.nvim'
@@ -60,7 +61,7 @@ return require('packer').startup(function(use)
   use 'folke/lsp-colors.nvim'
   use 'fenetikm/falcon'
 
-  use 'j-hui/fidget.nvim'
+  use { 'j-hui/fidget.nvim', tag = 'legacy' }
 
   -- For vsnip users.
   use 'hrsh7th/cmp-vsnip'

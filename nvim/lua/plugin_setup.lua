@@ -35,6 +35,20 @@ local on_attach = function(client, bufnr)
     floating_window = false,
     hint_scheme = 'Comment',
   })
+
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      -- disable virtual text
+      virtual_text = true,
+
+      -- show signs
+      signs = true,
+
+      -- delay update diagnostics
+      update_in_insert = true,
+    }
+  )
+
 end
   
 vim.api.nvim_create_autocmd("BufWritePre", {
