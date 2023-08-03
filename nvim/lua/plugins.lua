@@ -42,6 +42,7 @@ return require('packer').startup(function(use)
   use 'tpope/vim-sleuth'
   use 'NvChad/nvterm'
   -- Plug 'TimUntersberger/neogit'
+  use 'kazhala/close-buffers.nvim'
 
   use 'marko-cerovac/material.nvim'
   use 'tjdevries/colorbuddy.nvim'
@@ -50,6 +51,7 @@ return require('packer').startup(function(use)
   use 'stevearc/dressing.nvim'
   use 'nyoom-engineering/oxocarbon.nvim'
   use 'PHSix/nvim-hybrid'
+  use 'rmehri01/onenord.nvim'
 
   use 'neovim/nvim-lspconfig'
   use 'hrsh7th/cmp-nvim-lsp'

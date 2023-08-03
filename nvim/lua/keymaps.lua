@@ -41,6 +41,11 @@ map('', '<leader>rn', vim.lsp.buf.rename)
 map('', '<leader>l', vim.diagnostic.goto_next)
 map('', '<leader>e', vim.diagnostic.open_float)
 
+local cb = require('close_buffers')
+
+map('', '<leader>d', function()
+  cb.delete({ type = 'this' }) -- Delete the current buffer
+end)
 
 -- Change split orientation
 map('n', '<leader>tk', '<C-w>t<C-w>K') -- change vertical to horizontal

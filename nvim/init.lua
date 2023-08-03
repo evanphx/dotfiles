@@ -50,5 +50,17 @@ vim.g.nord_italic = true
 
 vim.cmd [[colorscheme nordic]]
 
+vim.g.clipboard = {
+  name = "tmux",
+  copy = {
+    ["+"] = {"tmux", "load-buffer", "-"},
+    ["*"] = {"tmux", "load-buffer", "-"},
+  },
+  paste = {
+    ["+"] = {"tmux", "save-buffer", "-"},
+    ["*"] = {"tmux", "save-buffer", "-"},
+  }
+}
+
 require 'keymaps'
 require 'plugin_setup'

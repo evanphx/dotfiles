@@ -79,6 +79,11 @@ _G.packer_plugins = {
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/CamelCaseMotion",
     url = "https://github.com/bkad/CamelCaseMotion"
   },
+  ["close-buffers.nvim"] = {
+    loaded = true,
+    path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/close-buffers.nvim",
+    url = "https://github.com/kazhala/close-buffers.nvim"
+  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -218,6 +223,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/kyazdani42/nvim-web-devicons"
+  },
+  nvterm = {
+    loaded = true,
+    path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/nvterm",
+    url = "https://github.com/NvChad/nvterm"
+  },
+  ["onenord.nvim"] = {
+    loaded = true,
+    path = "/home/evanphoenix/.local/share/nvim/site/pack/packer/start/onenord.nvim",
+    url = "https://github.com/rmehri01/onenord.nvim"
   },
   ["oxocarbon.nvim"] = {
     loaded = true,

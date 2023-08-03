@@ -48,7 +48,6 @@ local on_attach = function(client, bufnr)
       update_in_insert = true,
     }
   )
-
 end
   
 vim.api.nvim_create_autocmd("BufWritePre", {
@@ -566,6 +565,17 @@ pc.protobuf = {
   -- used_by = {"bar", "baz"} -- additional filetypes that use this parser
 }
 
+pc.sql = {
+  install_info = {
+    url = "~/git/tree-sitter-sql", -- local path or git repo
+    files = {"src/parser.c", "src/scanner.cc"},
+    branch = "main",
+  },
+  filetype = "sql", -- if filetype does not agrees with parser name
+  -- used_by = {"bar", "baz"} -- additional filetypes that use this parser
+}
+
+
 pc.hcl = {
   install_info = {
     url = "~/git/tree-sitter-hcl", -- local path or git repo
@@ -579,7 +589,7 @@ pc.hcl = {
 pc.hardlight = {
   install_info = {
     url = "~/git/tree-sitter-hardlight", -- local path or git repo
-    files = {"src/parser.c"},
+    files = {"src/parser.c", "src/scanner.cc"},
     branch = "main",
     generate_requires_npm = false, -- if stand-alone parser without npm dependencies
     requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
@@ -597,3 +607,11 @@ vim.filetype.add({
 require("fidget").setup{}
 
 require('dap-go').setup()
+
+require('close_buffers').setup({
+  filetype_ignore = {},  -- Filetype to ignore when running deletions
+  file_glob_ignore = {},  -- File name glob pattern to ignore when running deletions (e.g. '*.md')
+  file_regex_ignore = {}, -- File name regex pattern to ignore when running deletions (e.g. '.*[.]md')
+  preserve_window_layout = { 'this', 'nameless' },  -- Types of deletion that should preserve the window layout
+  next_buffer_cmd = nil,  -- Custom function to retrieve the next buffer when preserving window layout
+})
