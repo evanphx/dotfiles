@@ -75,6 +75,8 @@ return require('packer').startup(function(use)
   use "williamboman/mason-lspconfig.nvim"
   use "leoluz/nvim-dap-go"
 
+  use 'habamax/vim-asciidoctor'
+
   use {
     'nvim-treesitter/nvim-treesitter',
     run = function()
@@ -100,4 +102,19 @@ return require('packer').startup(function(use)
 
   use 'liuchengxu/vista.vim'
   use 'ray-x/lsp_signature.nvim'
+
+  use 'gpanders/nvim-parinfer'
+  use 'julienvincent/nvim-paredit'
+  use 'dundalek/parpar.nvim'
+
+  use 'zbirenbaum/copilot.lua'
+  use 'zbirenbaum/copilot-cmp'
+  -- use 'github/copilot.vim'
+  --
+
+  use {'yetone/avante.nvim', tag = 'v0.0.15', run = 'make' }
+  use "HakonHarnes/img-clip.nvim"
+  use "MeanderingProgrammer/render-markdown.nvim"
+  use 'MunifTanjim/nui.nvim'
+  use "echasnovski/mini.pick"
 end)

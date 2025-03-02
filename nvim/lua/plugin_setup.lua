@@ -1,6 +1,29 @@
 require("mason").setup()
 require("mason-lspconfig").setup()
 
+require("copilot").setup({
+  suggestion = {
+    enabled = true,
+    auto_trigger = true,
+    hide_during_completion = true,
+    debounce = 15,
+    ---@type table<'accept'|'accept_word'|'accept_line'|'next'|'prev'|'dismiss', false|string>
+    keymap = {
+      accept = "<C-Cr>",
+      accept_word = false,
+      accept_line = false,
+      next = "<M-]>",
+      prev = "<M-[>",
+      dismiss = "<C-]>",
+    },
+  },
+
+
+  --panel = { enabled = false },
+})
+
+--require("copilot_cmp").setup()
+
 local servers = { "gopls" }
 
 -- Setup lspconfig.
@@ -132,7 +155,7 @@ local cmp_kinds = {
   Value = '  ',
   Enum = '  ',
   Keyword = '  ',
-  Snippet = '  ',
+  Snippet = '  ',
   Color = '  ',
   File = '  ',
   Reference = '  ',
@@ -143,7 +166,10 @@ local cmp_kinds = {
   Event = '  ',
   Operator = '  ',
   TypeParameter = '  ',
+  Copilot = "",
 }
+
+vim.api.nvim_set_hl(0, "CmpItemKindCopilot", {fg ="#6CC644"})
 
 local cmp = require('cmp')
 local lspkind = require('lspkind')
@@ -168,7 +194,7 @@ cmp.setup({
       if cmp.visible() then
         cmp.select_next_item()
       elseif vim.fn["vsnip#available"](1) == 1 then
-        feedkey("<Plug>(vsnip-expand-or-jump)", "")
+        feedkey("<Plug>(vsnip-jump-next)", "")
       elseif has_words_before() then
         cmp.complete()
       else
@@ -192,12 +218,13 @@ cmp.setup({
     ["<Down>"] = cmp.mapping(function()
       if cmp.visible() then
         cmp.select_next_item()
-      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-        feedkey("<Plug>(vsnip-jump-prev)", "")
+      elseif vim.fn["vsnip#jumpable"](1) == 1 then
+        feedkey("<Plug>(vsnip-jump-next)", "")
       end
     end, { "i", "s" }),
   },
   sources = cmp.config.sources({
+    --{ name = "copilot", group_index = 2 },
     { name = 'nvim_lsp' },
     { name = 'vsnip' }, -- For vsnip users.
   }, {
@@ -221,7 +248,8 @@ require('nvim-treesitter.configs').setup {
     enable = true,
   },
   indent = {
-    enable = true
+    enable = true,
+    disable = { "yaml" },
   }
 }
 
@@ -614,4 +642,10 @@ require('close_buffers').setup({
   file_regex_ignore = {}, -- File name regex pattern to ignore when running deletions (e.g. '.*[.]md')
   preserve_window_layout = { 'this', 'nameless' },  -- Types of deletion that should preserve the window layout
   next_buffer_cmd = nil,  -- Custom function to retrieve the next buffer when preserving window layout
+})
+
+require('avante_lib').load()
+
+require('avante').setup ({
+  disable_tools = true,
 })

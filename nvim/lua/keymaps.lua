@@ -74,6 +74,10 @@ map('n', '<leader>q', ':qa!<CR>')
 map('n', '<C-t>', ':Term<CR>', { noremap = true })  -- open
 map('t', '<Esc>', '<C-\\><C-n>')                    -- exit
 
+vim.api.nvim_command("autocmd TermOpen * startinsert")             -- starts in insert mode
+vim.api.nvim_command("autocmd TermOpen * setlocal nonumber")       -- no numbers
+vim.api.nvim_command("autocmd TermEnter * setlocal signcolumn=no") -- no sign column
+
 -- tmux keys
 map('t', '<C-h>', '<C-\\><C-N><C-w>h')
 map('t', '<C-j>', '<C-\\><C-N><C-w>j')

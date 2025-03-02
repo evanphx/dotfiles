@@ -38,13 +38,15 @@ o.ruler = true
 o.showcmd = true
 o.laststatus = 2
 
+o.scrolloff = 5
+
 o.updatetime = 300
 o.shortmess = "c"
 
 o.background = "dark"
 o.mouse = "a"
 
-o.mapleader = ","
+vim.g.mapleader = ","
 
 vim.g.nord_italic = true
 
@@ -61,6 +63,17 @@ vim.g.clipboard = {
     ["*"] = {"tmux", "save-buffer", "-"},
   }
 }
+
+local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
+local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
+
+-- Disable line length marker
+augroup('setTextWidth', { clear = true })
+autocmd('Filetype', {
+  group = 'setTextWidth',
+  pattern = { 'text', 'markdown', 'html', 'xhtml', 'asciidoc' },
+  command = 'setlocal tw=80'
+})
 
 require 'keymaps'
 require 'plugin_setup'
