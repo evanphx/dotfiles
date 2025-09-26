@@ -478,7 +478,7 @@ gls.right = {
   {
     LspStatus = {
       provider = function()
-        local connected = not vim.tbl_isempty(vim.lsp.buf_get_clients(0))
+        local connected = not vim.tbl_isempty(vim.lsp.get_clients(0))
         if connected then
           return ' ' .. u 'f076' .. ' '
           -- return ' ' .. u 'f817' .. ' '
