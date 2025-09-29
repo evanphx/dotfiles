@@ -1,0 +1,21 @@
+[init]
+	defaultBranch = main
+[alias]
+	co = checkout
+	pushf = push --force-with-lease --force-if-includes
+	pr = !gh pr create --web
+	pr-status = !gh run list -b \"$(git rev-parse --abbrev-ref HEAD)\" -L 3
+	pr-merge = !gh pr merge \"$(git rev-parse --abbrev-ref HEAD)\" --auto
+[push]
+	default = current
+[http]
+	cookiefile = /home/evanphx/.gitcookies
+[merge]
+	conflictstyle = diff3
+[rerere]
+	enabled = true
+[core]
+	pager = delta --true-color always --keep-plus-minus-markers --navigate --syntax-theme Nord --file-style=brightyellow
+
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
