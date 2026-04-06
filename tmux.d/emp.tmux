@@ -24,7 +24,7 @@ set -g status-style "fg=white, bg=black"
 # set -g status-left "#[fg=colour236,bg=colour24] #S #[fg=colour114,bg=colour238,nobold,nounderscore,noitalics]"
 # set -g status-left-bg colour233
 # set -g status-left-fg colour243
-# set -g status-left-length 40
+set -g status-left-length 40
 set -g status-left "#[fg=black,bg=blue,bold] #S #[fg=blue,bg=black,nobold]"
 
 # Right side of status bar

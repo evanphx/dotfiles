@@ -250,15 +250,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Set filetype for .adoc files to asciidoc
-vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
-  pattern = '*.adoc',
-  callback = function()
-    vim.bo.filetype = 'asciidoc'
-  end,
-})
+--vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
+  --pattern = '*.adoc',
+  --callback = function()
+    --vim.bo.filetype = 'asciidoc'
+  --end,
+--})
 
 -- Add runtime path for tree-sitter-asciidoc queries
-vim.opt.runtimepath:append(vim.fn.expand("~/git/tree-sitter-asciidoc/tree-sitter-asciidoc"))
+--vim.opt.runtimepath:append(vim.fn.expand("~/git/tree-sitter-asciidoc/tree-sitter-asciidoc"))
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -418,6 +418,11 @@ require('lazy').setup({
       vim.cmd.colorscheme 'nordic'
     end,
   },
+  'p00f/alabaster.nvim',
+  "EdenEast/nightfox.nvim",
+	{
+		'rose-pine/neovim',
+	},
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -1364,7 +1369,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'asciidoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc',},
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -1378,6 +1383,7 @@ require('lazy').setup({
     },
     config = function(_, opts)
       -- Configure custom parser for asciidoc
+      --[[
       local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
       parser_config.asciidoc = {
         install_info = {
@@ -1399,6 +1405,7 @@ require('lazy').setup({
         },
         filetype = "asciidoc_inline",
       }
+      --]]
       require("nvim-treesitter.configs").setup(opts)
     end,
     -- There are additional nvim-treesitter modules that you can use to interact
@@ -1435,6 +1442,15 @@ require('lazy').setup({
       { "<leader>ao", "<cmd>ClaudeCodeOpen<cr>", mode = { "n", "v" }, desc = "Open/Focus Claude Terminal" },
       { "<leader>ax", "<cmd>ClaudeCodeClose<cr>", mode = { "n", "v" }, desc = "Close Claude Terminal" },
     },
+  },
+  {
+    'pwntester/octo.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = true,
   }
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
