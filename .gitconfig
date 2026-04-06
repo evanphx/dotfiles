@@ -1,0 +1,17 @@
+[init]
+	defaultBranch = main
+[alias]
+	co = checkout
+	pushf = push --force-with-lease --force-if-includes
+[push]
+	default = current
+[merge]
+	conflictstyle = diff3
+[rerere]
+	enabled = true
+[core]
+	pager = delta --true-color always --keep-plus-minus-markers --navigate --syntax-theme Nord --file-style=brightyellow
+	excludesfile = /home/evanphx/.gitignore_global
+
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
